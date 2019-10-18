@@ -19,7 +19,6 @@ public class Sudoku {
     private List<List<Cell>> rowSplit;
     private List<List<Cell>> columnSplit;
     private List<List<Cell>> squareSplit;
-    //private Map</**number**/Integer,/**size**/Integer>
 
     public Sudoku(URL url) {
         cells = new Cell[9][9];
@@ -123,10 +122,10 @@ public class Sudoku {
         return stringBuilder.toString();
     }
 
-    public void writeToFile(URL url) {
+    public void writeToFile(URL url,boolean append) {
         if (url != null) {
             try {
-                FileOutputStream in = new FileOutputStream(url.getPath(),true);
+                FileOutputStream in = new FileOutputStream(url.getPath(),append);
                 DataOutputStream dif = new DataOutputStream(in);
                 dif.write(toString().getBytes("utf-8"));
                 dif.close();

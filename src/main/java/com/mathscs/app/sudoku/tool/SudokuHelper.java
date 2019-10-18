@@ -144,12 +144,8 @@ public class SudokuHelper {
         Set<Cell> neighborCells = obtainNeighborCellsByCell(cell);
         for (Cell neighborCell : neighborCells) {
             if (neighborCell.getPossibleValues().contains(cell.getPossibleValues().get(0))) {
-                try {
-                    neighborCell.getPossibleValues().remove(cell.getPossibleValues().get(0));
-                    removeImpossibleCell(neighborCell);
-                } catch (Exception e) {
-                    System.out.println(e.getStackTrace());
-                }
+                neighborCell.getPossibleValues().remove(cell.getPossibleValues().get(0));
+                removeImpossibleCell(neighborCell);
             }
         }
     }
@@ -168,7 +164,7 @@ public class SudokuHelper {
             Set<Cell> otherSet = nineCells.stream().collect(Collectors.toSet());
             Cell c = celllist.get(i);
             set.add(c);
-            for (int j = i+1; j < celllist.size(); j++) {
+            for (int j = i + 1; j < celllist.size(); j++) {
                 Cell cc = celllist.get(j);
                 if (c.getPossibleValues().containsAll(cc.getPossibleValues())) {
                     set.add(cc);
@@ -177,7 +173,7 @@ public class SudokuHelper {
             if (set.size() >= c.getPossibleValues().size()) {
                 //可以排除其他cell里可能值
                 otherSet.removeAll(set);
-                otherSet.stream().forEach(cell ->{
+                otherSet.stream().forEach(cell -> {
                     cell.getPossibleValues().removeAll(c.getPossibleValues());
                     if (cell.getPossibleValues().size() == 1) {
                         removeImpossibleCell(cell);
