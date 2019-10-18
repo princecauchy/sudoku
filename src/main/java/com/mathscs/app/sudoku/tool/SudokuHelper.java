@@ -1,7 +1,7 @@
-package com.mathscs.app.soudu.tool;
+package com.mathscs.app.sudoku.tool;
 
-import com.mathscs.app.soudu.model.Cell;
-import com.mathscs.app.soudu.model.Soudu;
+import com.mathscs.app.sudoku.model.Cell;
+import com.mathscs.app.sudoku.model.Sudoku;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -10,11 +10,11 @@ import java.util.stream.Collectors;
  * @author hushu.czh
  * @date 2019/10/17
  */
-public class SouduHelper {
+public class SudokuHelper {
     private static List<Integer> NINE_NUMS = Collections.unmodifiableList(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
-    private Soudu soudu;
+    private Sudoku soudu;
 
-    public SouduHelper(Soudu soudu) {
+    public SudokuHelper(Sudoku soudu) {
         this.soudu = soudu;
     }
 

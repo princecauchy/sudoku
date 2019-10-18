@@ -1,4 +1,4 @@
-package com.mathscs.app.soudu;
+package com.mathscs.app.sudoku;
 
 import static org.junit.Assert.assertTrue;
 

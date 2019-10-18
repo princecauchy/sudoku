@@ -1,4 +1,4 @@
-package com.mathscs.app.soudu.model;
+package com.mathscs.app.sudoku.model;
 
 import lombok.Getter;
 import lombok.Setter;

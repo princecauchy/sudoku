@@ -1,8 +1,8 @@
-package com.mathscs.app.soudu;
+package com.mathscs.app.sudoku;
 
-import com.mathscs.app.soudu.model.Cell;
-import com.mathscs.app.soudu.model.Soudu;
-import com.mathscs.app.soudu.tool.SouduHelper;
+import com.mathscs.app.sudoku.model.Cell;
+import com.mathscs.app.sudoku.model.Sudoku;
+import com.mathscs.app.sudoku.tool.SudokuHelper;
 
 import java.net.URL;
 import java.util.List;
@@ -13,8 +13,8 @@ import java.util.List;
 public class App {
     public static void main(String[] args) {
         URL path = Thread.currentThread().getContextClassLoader().getResource("in.csv");
-        Soudu soudu = new Soudu(path);
-        SouduHelper souduHelper = new SouduHelper(soudu);
+        Sudoku soudu = new Sudoku(path);
+        SudokuHelper souduHelper = new SudokuHelper(soudu);
         for (Cell c : soudu.remainingCells) {
             souduHelper.initUnknownCell(c);
         }
@@ -38,7 +38,7 @@ public class App {
         }
     }
 
-    public static void write(Soudu soudu) {
+    public static void write(Sudoku soudu) {
         URL outUrl = Thread.currentThread().getContextClassLoader().getResource("out.csv");
         soudu.writeToFile(outUrl);
 

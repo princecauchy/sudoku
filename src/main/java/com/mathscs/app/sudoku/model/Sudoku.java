@@ -1,4 +1,4 @@
-package com.mathscs.app.soudu.model;
+package com.mathscs.app.sudoku.model;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -13,7 +13,7 @@ import java.util.*;
  * @author hushu.czh
  * @date 2019/10/17
  */
-public class Soudu {
+public class Sudoku {
     public Set<Cell> remainingCells = new LinkedHashSet<>();
     public Cell[][] cells;
     private List<List<Cell>> rowSplit;
@@ -21,7 +21,7 @@ public class Soudu {
     private List<List<Cell>> squareSplit;
     //private Map</**number**/Integer,/**size**/Integer>
 
-    public Soudu(URL url) {
+    public Sudoku(URL url) {
         cells = new Cell[9][9];
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
