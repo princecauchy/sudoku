@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
  * @date 2019/10/17
  */
 public class SudokuHelper {
+    public volatile boolean ifChanged;
     private static List<Integer> NINE_NUMS = Collections.unmodifiableList(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
     private Sudoku soudu;
 
@@ -125,7 +126,7 @@ public class SudokuHelper {
         Set<Cell> neighborCells = obtainNeighborCellsByCell(cell);
         List<Integer> impossibleValues = neighborCells.stream().filter(nc -> nc.getPossibleValues().size() == 1)
             .map(nc -> nc.getPossibleValues().get(0)).collect(Collectors.toList());
-        possibleValues.removeAll(impossibleValues);
+        ifChanged |= possibleValues.removeAll(impossibleValues);
         if (possibleValues.size() == 1) {
             removeImpossibleCell(cell);
         }
@@ -140,11 +141,11 @@ public class SudokuHelper {
         if (cell.getPossibleValues().size() > 1 || cell.getPossibleValues().size() == 0) {
             return;
         }
-        soudu.remainingCells.remove(cell);
+        ifChanged |= soudu.remainingCells.remove(cell);
         Set<Cell> neighborCells = obtainNeighborCellsByCell(cell);
         for (Cell neighborCell : neighborCells) {
             if (neighborCell.getPossibleValues().contains(cell.getPossibleValues().get(0))) {
-                neighborCell.getPossibleValues().remove(cell.getPossibleValues().get(0));
+                ifChanged |= neighborCell.getPossibleValues().remove(cell.getPossibleValues().get(0));
                 removeImpossibleCell(neighborCell);
             }
         }
@@ -174,7 +175,7 @@ public class SudokuHelper {
                 //可以排除其他cell里可能值
                 otherSet.removeAll(set);
                 otherSet.stream().forEach(cell -> {
-                    cell.getPossibleValues().removeAll(c.getPossibleValues());
+                    ifChanged |= cell.getPossibleValues().removeAll(c.getPossibleValues());
                     if (cell.getPossibleValues().size() == 1) {
                         removeImpossibleCell(cell);
                     }
@@ -197,6 +198,7 @@ public class SudokuHelper {
             if (list.size() == 1) {
                 Cell cell = list.get(0);
                 cell.setPossibleValues(Arrays.asList(num));
+                ifChanged = true;
                 removeImpossibleCell(cell);
             }
         }

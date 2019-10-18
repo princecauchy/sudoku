@@ -22,12 +22,9 @@ public class App {
             System.out.println(e.getStackTrace());
         }
         write(soudu, true);
-        int i = 0;
+        souduHelper.ifChanged = true;
         while (!soudu.remainingCells.isEmpty()) {
-            i++;
-            if (i == 10) {
-                break;
-            }
+            souduHelper.ifChanged = false;
             List<List<Cell>> squareList = soudu.splitBySquare();
             squareList.stream().forEach(cellList -> {
                 souduHelper.excludeByUnique(cellList);
@@ -43,6 +40,10 @@ public class App {
                 souduHelper.excludeByUnique(cellList);
                 souduHelper.excludeBySet(cellList);
             });
+            if (!souduHelper.ifChanged) {
+                //跨list<Cell>分析
+                break;
+            }
             write(soudu, true);
         }
     }
