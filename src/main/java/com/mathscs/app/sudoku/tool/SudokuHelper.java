@@ -120,6 +120,9 @@ public class SudokuHelper {
 
     public void initUnknownCell(Cell cell) {
         List<Integer> possibleValues = cell.getPossibleValues();
+        if (!possibleValues.isEmpty()) {
+            return;
+        }
         if (possibleValues.isEmpty()) {
             possibleValues.addAll(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
         }
@@ -144,9 +147,14 @@ public class SudokuHelper {
         ifChanged |= soudu.remainingCells.remove(cell);
         Set<Cell> neighborCells = obtainNeighborCellsByCell(cell);
         for (Cell neighborCell : neighborCells) {
-            if (neighborCell.getPossibleValues().contains(cell.getPossibleValues().get(0))) {
-                ifChanged |= neighborCell.getPossibleValues().remove(cell.getPossibleValues().get(0));
-                removeImpossibleCell(neighborCell);
+            try {
+                if (neighborCell.getPossibleValues().size() > 1 && neighborCell.getPossibleValues().contains(
+                    cell.getPossibleValues().get(0))) {
+                    ifChanged |= neighborCell.getPossibleValues().remove(cell.getPossibleValues().get(0));
+                    removeImpossibleCell(neighborCell);
+                }
+            } catch (Exception e) {
+                System.out.println(e.getStackTrace());
             }
         }
     }
@@ -214,11 +222,11 @@ public class SudokuHelper {
             list2.add(soudu.cells[i + ii][j]);
             excludeByAcrossList(squareList, list2);
         }
-            for (int jj = 0; jj < 3; jj++) {
-                List<Cell> list2 = new ArrayList<>(obtainColumnCellsByCell(soudu.cells[i][j + jj]));
-                list2.add(soudu.cells[i][j + jj]);
-                excludeByAcrossList(squareList, list2);
-            }
+        for (int jj = 0; jj < 3; jj++) {
+            List<Cell> list2 = new ArrayList<>(obtainColumnCellsByCell(soudu.cells[i][j + jj]));
+            list2.add(soudu.cells[i][j + jj]);
+            excludeByAcrossList(squareList, list2);
+        }
     }
 
     private void excludeByAcrossList(List<Cell> list1, List<Cell> list2) {
