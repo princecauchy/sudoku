@@ -29,6 +29,7 @@ public class App {
             squareList.stream().forEach(cellList -> {
                 souduHelper.excludeByUnique(cellList);
                 souduHelper.excludeBySet(cellList);
+                souduHelper.excludeByAcrossList(cellList);
             });
             List<List<Cell>> rowList = soudu.splitByRow();
             rowList.stream().forEach(cellList -> {
@@ -41,7 +42,6 @@ public class App {
                 souduHelper.excludeBySet(cellList);
             });
             if (!souduHelper.ifChanged) {
-                //跨list<Cell>分析
                 break;
             }
             write(soudu, true);

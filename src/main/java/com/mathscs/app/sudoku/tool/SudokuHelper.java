@@ -204,4 +204,57 @@ public class SudokuHelper {
         }
     }
 
+    public void excludeByAcrossList(List<Cell> squareList) {
+        Cell cell = squareList.get(0);
+        int k = cell.getX() / 3 * 3 + cell.getY() / 3; //获取square序号
+        int i = k / 3 * 3;
+        int j = k % 3 * 3;
+        for (int ii = 0; ii < 3; ii++) {
+            List<Cell> list2 = new ArrayList<>(obtainRowCellsByCell(soudu.cells[i + ii][j]));
+            list2.add(soudu.cells[i + ii][j]);
+            excludeByAcrossList(squareList, list2);
+        }
+            for (int jj = 0; jj < 3; jj++) {
+                List<Cell> list2 = new ArrayList<>(obtainColumnCellsByCell(soudu.cells[i][j + jj]));
+                list2.add(soudu.cells[i][j + jj]);
+                excludeByAcrossList(squareList, list2);
+            }
+    }
+
+    private void excludeByAcrossList(List<Cell> list1, List<Cell> list2) {
+        //计算交集
+        List<Cell> intersection = new ArrayList<>(list1);
+        intersection.retainAll(list2);
+        //各list的差集
+        List<Cell> l1 = new ArrayList<>(list1);
+        l1.removeAll(intersection);
+        List<Cell> l2 = new ArrayList<>(list2);
+        l2.removeAll(intersection);
+        //计算l1和l2的possibleValues交集
+        Set<Integer> possiblevalues1 = l1.stream().flatMap(cell -> cell.getPossibleValues().stream()).collect(
+            Collectors.toSet());
+        Set<Integer> possiblevalues2 = l2.stream().flatMap(cell -> cell.getPossibleValues().stream()).collect(
+            Collectors.toSet());
+        Set<Integer> possibleValues = new HashSet<>(possiblevalues1);
+        possibleValues.retainAll(possiblevalues2);
+        //遍历l1和l2,利用possibleValuses缩小值域
+        l1.stream().forEach(cell -> {
+            if (cell.getPossibleValues().size() > 1) {
+                ifChanged |= cell.getPossibleValues().retainAll(possibleValues);
+                if (cell.getPossibleValues().size() == 1) {
+                    removeImpossibleCell(cell);
+                }
+            }
+        });
+        l2.stream().forEach(cell -> {
+            if (cell.getPossibleValues().size() > 1) {
+                ifChanged |= cell.getPossibleValues().retainAll(possibleValues);
+                if (cell.getPossibleValues().size() == 1) {
+                    removeImpossibleCell(cell);
+                }
+            }
+        });
+
+    }
+
 }
